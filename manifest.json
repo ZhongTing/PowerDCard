@@ -6,6 +6,7 @@
   "version": "1.0",
  
   "browser_action": {
+	"default_popup": "popup.html"
   },
   "content_scripts": [
     {
@@ -13,8 +14,12 @@
       "js": ["jquery.min.js", "jquery-ui.min.js","dcard.js"]
     }
   ],
+  "background": {
+    "scripts": ["ga.js"]
+  },
   "permissions": [
     "https://secure.flickr.com/",
 	"http://www.dcard.tw/"
-  ]
+  ],
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
 }
