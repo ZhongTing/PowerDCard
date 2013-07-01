@@ -112,6 +112,22 @@ function getID(text)
 }
 //End--SetID for elements
 
+$(".floor_num_block").click(function(){
+	var floor = $(this).text();
+	var name = $(this).siblings(".author_block").text().trim().replace(/\s+/g,' ');
+	var text = '>> '+floor+' '+name;
+	$(".comment_content").text(text);
+	$("#go_to_reply>button").click();
+})
+$(".floor_num_block").hover(
+	function(){
+		$(this).css('cursor','pointer');
+	}, 
+	function() {
+		$(this).css('cursor','auto');
+	}
+)
+
 //Start--anchor hyperlink and its effect
 $(".hyperlink[data-id]").click(function(){
 	var id = $(this).attr('data-id');
@@ -170,7 +186,6 @@ $('a.hyperlink').hover(
     $(this).css("color", "blue");
   }
 );
-//$("#go_to_reply>button").click()
 
 //test case
 //http://www.dcard.tw/index.php?p=question&id=1699 for anchor hyperlink
