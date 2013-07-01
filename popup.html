@@ -1,9 +1,49 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
-  <head>
-    <title>PowerDcard</title>
-    <script src="ga.js"></script>
-  </head>
-  <body>
-  </body>
+<head>
+	<title>PowerDcard</title>
+	<link rel=stylesheet type="text/css" href="css/onoff.css">
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+	<h3>Dcard 小幫手</h3>
+	<table>
+		<tr>
+			<td style="width:150px">預覽圖片</td>
+			<td>
+				<div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="previewImg" checked>
+					<label class="onoffswitch-label" for="previewImg">
+						<div class="onoffswitch-inner"></div>
+						<div class="onoffswitch-switch"></div>
+					</label>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>嵌入Youtube影片</td>
+			<td>
+				<div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="embedYoutubeVideo" checked>
+					<label class="onoffswitch-label" for="embedYoutubeVideo">
+						<div class="onoffswitch-inner"></div>
+						<div class="onoffswitch-switch"></div>
+					</label>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<form class="form-search">
+	  <div class="input-append">
+		<input type="text" style="margin-top: 2px;" class="span2 search-query" placeholder="enter keywords...">>
+		<button type="button" class="btn btn-success">Search</button>
+	  </div>
+	</form>
+</body>
+
+<script src="js/ga.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/popup.js"></script>
+
 </html>

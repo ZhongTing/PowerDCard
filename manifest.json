@@ -11,11 +11,11 @@
   "content_scripts": [
     {
       "matches": ["http://www.dcard.tw/*"],
-      "js": ["jquery.min.js", "jquery-ui.min.js","dcard.js"]
+      "js": ["js/jquery.min.js", "js/jquery-ui.min.js","js/dcard.js"]
     }
   ],
   "background": {
-    "scripts": ["ga.js"]
+    "scripts": ["js/ga.js"]
   },
   "permissions": [
     "https://secure.flickr.com/",
