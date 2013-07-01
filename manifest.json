@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+
+  "name": "DCard 小幫手",
+  "description": "讓你更方便得瀏覽Dcard ^_^",
+  "version": "1.0",
+ 
+  "browser_action": {
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://www.dcard.tw/*"],
+      "js": ["jquery.min.js", "jquery-ui.min.js","dcard.js"]
+    }
+  ],
+  "permissions": [
+    "https://secure.flickr.com/",
+	"http://www.dcard.tw/"
+  ]
+}
