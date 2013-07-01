@@ -1,5 +1,6 @@
-$('.comment_block p').each(function(){
-	var data = $(this).html();
+function mainFun(obj)
+{
+	var data = $(obj).html();
 	var html = data;
 	var urls = html.replace(/<br>/g,' ').match(/\bhttps?:\/\/\S+\b/g);
 	var names = html.match(/[\u4E00-\u9FA5]+大學? \S+[系所班程]\s+[男女]同學 ?[IVX]*/g);
@@ -14,7 +15,6 @@ $('.comment_block p').each(function(){
 			if(urls[i].match(/\.(jpg)|(png)/))
 			{
 				content = '<br><img src="'+urls[i]+'">';
-				//content = '<br><img src="'+urls[i]+'">';
 			}
 			else if(urls[i].match(/www.youtube.com/))
 			{
@@ -53,9 +53,14 @@ $('.comment_block p').each(function(){
 		var content = '<br>' + showBtn + '<div class="hideDiv"><br>' +hideBlock[2]+ '</div>';
 		origin = origin.replace(hideBlock[0],content);
 	}
-	$(this).html(origin);
+	$(obj).html(origin);
+}
+$(".article").each(function(){
+	mainFun(this);
 })
-
+$('.comment_block p').each(function(){
+	mainFun(this);
+})
 //adjust the image if the size is out of range
 $("img").one('load', function() {
   var maxWidth = $(".comment").width()-150;
@@ -124,6 +129,8 @@ function moveTo(originObj,targetId)
 	var originObj = $(originObj).parent().parent().parent();
 	var nearestTarget = getNearestTargetAbove(originObj,targetId);
 	var target = $(nearestTarget).parent().parent();
+	
+	if(target==null)return; //in case 安價 unvalid floor anchor hyperlink
 	var targetTop = target.offset().top;
 	$("html, body").animate({ scrollTop: targetTop-100},1000,"swing",highlight(target));
 	$(".back").remove();
