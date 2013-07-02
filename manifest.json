@@ -11,15 +11,16 @@
   "content_scripts": [
     {
       "matches": ["http://www.dcard.tw/*"],
-      "js": ["js/jquery.min.js", "js/jquery-ui.min.js","js/dcard.js"]
+      "js": ["lib/jquery1_6.min.js","lib/jquery-color.js","js/dcard.js"]
     }
   ],
   "background": {
     "scripts": ["js/ga.js"]
   },
   "permissions": [
-    "https://secure.flickr.com/",
-	"http://www.dcard.tw/"
+	"http://www.dcard.tw/",
+	"storage"
   ],
+  "options_page": "popup.html",
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
 }

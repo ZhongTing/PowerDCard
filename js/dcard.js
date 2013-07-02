@@ -12,15 +12,6 @@ function mainFun(obj)
 		for(var i=0;i<urls.length;i++)
 		{
 			var content = '<a class="hyperlink" style="color:blue" href="'+urls[i]+'">'+urls[i]+'</a>';
-			if(urls[i].match(/\.(jpg)|(png)/))
-			{
-				content = '<br><img src="'+urls[i]+'">';
-			}
-			else if(urls[i].match(/www.youtube.com/))
-			{
-				var youtubeID = urls[i].match(/v=(.*)\b/)[1];
-				content = '<iframe width="420" height="315" src="//www.youtube.com/embed/'+youtubeID+'" frameborder="0" allowfullscreen></iframe>';
-			}
 			origin = origin.replace(urls[i],content);
 		}
 	}
@@ -61,20 +52,6 @@ $(".article").each(function(){
 $('.comment_block p').each(function(){
 	mainFun(this);
 })
-//adjust the image if the size is out of range
-$("img").one('load', function() {
-  var maxWidth = $(".comment").width()-150;
-	var width = $(this).width();
-	if(width > maxWidth)
-	{
-		var height = $(this).height() * maxWidth / width;
-		width = maxWidth;
-		$(this).width(width);
-		$(this).height(height);
-	}
-}).each(function() {
-  if(this.complete) $(this).load();
-});
 
 //Start--show the hiding div
 $(".showBtn").click(function(){
@@ -112,6 +89,7 @@ function getID(text)
 }
 //End--SetID for elements
 
+//Start--Reply with quote
 $(".floor_num_block").click(function(){
 	var floor = $(this).text();
 	var name = $(this).siblings(".author_block").text().trim().replace(/\s+/g,' ');
@@ -127,6 +105,7 @@ $(".floor_num_block").hover(
 		$(this).css('cursor','auto');
 	}
 )
+//End--Reply with quote
 
 //Start--anchor hyperlink and its effect
 $(".hyperlink[data-id]").click(function(){
@@ -171,8 +150,7 @@ function getNearestTargetAbove(originObj,targetId)
 	var objArray = $("#"+targetId);
 	for(var i=0;i<objArray.length;i++)
 	{
-	if($(objArray[i]).offset().top>originOffset)
-	break;
+		if($(objArray[i]).offset().top>originOffset)break;
 	}
 	return objArray[i-1]; 
 }
@@ -186,6 +164,86 @@ $('a.hyperlink').hover(
     $(this).css("color", "blue");
   }
 );
+
+//Start--Personal settings for embed view and preview image
+chrome.storage.sync.get(null,function(items) 
+{
+    for(var id in items)
+	{
+		var val = items[id];
+		if(val==true)
+		{
+			switch(id)
+			{
+				case 'embedYoutubeVideo': embedYoutubeVideo();break;
+				case 'previewImg': previewImg();break;
+			}
+		}
+	}
+})
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+	for (key in changes) {
+		var storageChange = changes[key];
+		if(storageChange.newValue==true)
+		{
+			switch(key)
+			{
+				case 'embedYoutubeVideo': embedYoutubeVideo();break;
+				case 'previewImg': previewImg();break;
+			}
+		}
+		console.log('Storage key "%s" in namespace "%s" changed. ' +
+					'Old value was "%s", new value is "%s".',
+					key,
+					namespace,
+					storageChange.oldValue,
+					storageChange.newValue);
+	}
+});
+
+function embedYoutubeVideo()
+{
+	$(".hyperlink").each(function(){
+		var url = $(this).attr('href');
+		if(url.match(/www.youtube.com/))
+		{
+			var youtubeID = url.match(/v=(.*)\b/)[1];
+			content = '<iframe width="420" height="315" src="//www.youtube.com/embed/'+youtubeID+'" frameborder="0" allowfullscreen></iframe>';
+			$(this).replaceWith(content);
+		}
+	})
+}
+function previewImg()
+{
+	$(".hyperlink").each(function(){
+		var url = $(this).attr('href');
+		if(url.match(/\.(jpg)|(png)/))
+		{
+			content = '<br><img src="'+url+'">';
+			$(this).replaceWith(content);
+		}
+	})
+	adjustImgSize();
+}
+function adjustImgSize()
+{
+	//adjust the image if the size is out of range
+	$("img").one('load', function() {
+	  var maxWidth = $(".comment").width()-150;
+		var width = $(this).width();
+		if(width > maxWidth)
+		{
+			var height = $(this).height() * maxWidth / width;
+			width = maxWidth;
+			$(this).width(width);
+			$(this).height(height);
+		}
+	}).each(function() {
+	  if(this.complete) $(this).load();
+	});
+}
+//End--Personal settings for embed view and preview image
 
 //test case
 //http://www.dcard.tw/index.php?p=question&id=1699 for anchor hyperlink
