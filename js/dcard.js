@@ -4,7 +4,7 @@ function mainFun(obj)
 	var html = data;
 	var urls = html.replace(/<br>/g,' ').match(/\bhttps?:\/\/\S+\b/g);
 	var names = html.match(/[\u4E00-\u9FA5]+大學? \S+[系所班程]\s+[男女]同學 ?[IVX]*/g);
-	var floors = html.match(/(([^%][Bb])|(^[Bb]))\d{1,3}\b/g);
+	var floors = html.match(/(([^%\w][Bb])|(^[Bb]))\d{1,3}\b/g);
 	var hideBlock = html.match(/(<br>){7,}(.*)/);
 	var origin = data;
 	if(urls!=null)
@@ -34,6 +34,7 @@ function mainFun(obj)
 		}
 		for(var element in floorDictionary)
 		{
+			//bug == may cause some problem like 'b1 b2 %b1';
 			var re = new RegExp(element,"g");
 			origin = origin.replace(re,'<a class="hyperlink" style="color:blue" data-floor="'+element+'" href="#">'+element+'</a>');
 		}
@@ -208,8 +209,12 @@ function embedYoutubeVideo()
 		var url = $(this).attr('href');
 		if(url.match(/www.youtube.com/))
 		{
-			var youtubeID = url.match(/v=(.*)\b/)[1];
-			content = '<iframe width="420" height="315" src="//www.youtube.com/embed/'+youtubeID+'" frameborder="0" allowfullscreen></iframe>';
+			var pattern = url.match(/v=([^&]*)(&list=(.*))?/);
+			var videoID = pattern[1];
+			var listID = pattern[3];
+			var src = '//www.youtube.com/embed/'+videoID;
+			src += listID!=null? '?list='+listID:'';
+			content = '<iframe width="420" height="315" src="'+src+'" frameborder="0" allowfullscreen></iframe>';
 			$(this).replaceWith(content);
 		}
 	})
