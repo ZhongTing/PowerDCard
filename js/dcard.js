@@ -116,7 +116,7 @@ $(".hyperlink[data-id]").click(function(){
 
 $(".hyperlink[data-floor]").click(function(){
 	var id = $(this).attr('data-floor');
-	moveTo(this,id);
+	return moveTo(this,id);
 })
 
 function moveTo(originObj,targetId)
@@ -126,7 +126,7 @@ function moveTo(originObj,targetId)
 	var nearestTarget = getNearestTargetAbove(originObj,targetId);
 	var target = $(nearestTarget).parent().parent();
 	
-	if(target==null)return; //in case 安價 unvalid floor anchor hyperlink
+	if(target==null||target.offset()==null)return false; //in case 安價 unvalid floor anchor hyperlink
 	var targetTop = target.offset().top;
 	$("html, body").animate({ scrollTop: targetTop-100},1000,"swing",highlight(target));
 	$(".back").remove();

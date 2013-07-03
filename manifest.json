@@ -17,6 +17,10 @@
   "background": {
     "scripts": ["js/ga.js"]
   },
+  "background": {
+    "scripts": ["js/install.js"],
+    "persistent": false
+  },
   "permissions": [
 	"http://www.dcard.tw/",
 	"storage"
