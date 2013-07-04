@@ -41,7 +41,7 @@ function mainFun(obj)
 	}
 	if(hideBlock!=null)
 	{
-		var showBtn = '<input type="button" class="showBtn" value="Show">';
+		var showBtn = '<input type="button" class="showBtn" value="More">';
 		var content = '<br>' + showBtn + '<div class="hideDiv"><br>' +hideBlock[2]+ '</div>';
 		origin = origin.replace(hideBlock[0],content);
 	}
