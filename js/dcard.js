@@ -90,7 +90,9 @@ $(".floor_num_block").click(function(){
 	var name = $(this).siblings(".author_block").text().trim().replace(/\s+/g,' ');
 	var text = '>> '+floor+' '+name;
 	$(".comment_content").text(text);
-	$("#go_to_reply>button").click();
+	//$("#go_to_reply>button").click();
+	var targetTop = $(".comment_box").offset().top;
+	$("html, body").animate({ scrollTop: targetTop-100},1000,"swing");
 })
 $(".floor_num_block").hover(
 	function(){
@@ -122,13 +124,23 @@ function moveTo(originObj,targetId)
 	
 	if(target==null||target.offset()==null)return false; //in case 安價 unvalid anchor hyperlink
 	var targetTop = target.offset().top;
-	$("html, body").animate({ scrollTop: targetTop-100},1000,"swing",highlight(target));
+	var scrollTop = $(window).scrollTop();
+	var windowHeight = $(window).height();
+	//back button
 	$(".back").remove();
 	target.children().children('.acting_block').append('<input class="back" type="button" value="back" />');
 	$(".back").click(function(){
 		$("html, body").animate({ scrollTop: nowScrollTop},1000,"swing",highlight(originObj));
 		$(this).remove();
 	})
+	//animation
+	if(scrollTop>targetTop || targetTop < scrollTop+windowHeight)
+		$("html, body").animate({ scrollTop: targetTop-100},1000,"swing",highlight(target));
+	else
+	{
+		highlight(target);
+		return false;
+	}
 }
 
 function highlight(target)
