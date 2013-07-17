@@ -4,7 +4,7 @@ function mainFun(obj)
 	var html = data;
 	var urls = html.replace(/<br>/g,' ').match(/\bhttps?:\/\/\S+\b/g);
 	var names = html.match(/((..)|([中台臺][\u4E00-\u9FA5]+))((大學?)|院) \S+[系所班程]\s+[男女]同學 ?[IVX]*/g);
-	var floors = html.match(/(([^%\w][Bb])|(^[Bb]))\d{1,3}\b/g);
+	var floors = html.replace(/<br>/g,' ').match(/(([^%\w][Bb])|(^[Bb]))\d{1,3}\b/g);
 	var hideBlock = html.match(/(<br>){7,}(.*)/);
 	var origin = data;
 	if(urls!=null)
@@ -25,18 +25,12 @@ function mainFun(obj)
 	}
 	if(floors!=null)
 	{
-		var floorDictionary = {};
 		for(var i=0;i<floors.length;i++)
 		{
-			//floor match pattern may be ';b1'
 			if(floors[i][0]!='b' && floors[i][0]!='B')floors[i]=floors[i].substr(1);
-			floorDictionary[floors[i]] = floors[i];
-		}
-		for(var element in floorDictionary)
-		{
-			//bug == may cause some problem like 'b1 b2 %b1';
-			var re = new RegExp(element,"g");
-			origin = origin.replace(re,'<a class="hyperlink" style="color:blue" data-floor="'+element+'" href="#">'+element+'</a>');
+			var re = new RegExp('(([^%>"])|<br>)'+floors[i]);
+			var temp = origin.match(re)[0].replace(floors[i],'<a class="hyperlink" style="color:blue" data-floor="'+floors[i]+'" href="#">'+floors[i]+'</a>');
+            origin = origin.replace(re,temp);
 		}
 	}
 	if(hideBlock!=null)
@@ -111,7 +105,7 @@ $(".floor_num_block").hover(
 //Start--anchor hyperlink and its effect
 $(".hyperlink[data-id]").click(function(){
 	var id = $(this).attr('data-id');
-	moveTo(this,id);
+	return moveTo(this,id);
 })
 
 $(".hyperlink[data-floor]").click(function(){
@@ -126,7 +120,7 @@ function moveTo(originObj,targetId)
 	var nearestTarget = getNearestTargetAbove(originObj,targetId);
 	var target = $(nearestTarget).parent().parent();
 	
-	if(target==null||target.offset()==null)return false; //in case 安價 unvalid floor anchor hyperlink
+	if(target==null||target.offset()==null)return false; //in case 安價 unvalid anchor hyperlink
 	var targetTop = target.offset().top;
 	$("html, body").animate({ scrollTop: targetTop-100},1000,"swing",highlight(target));
 	$(".back").remove();
