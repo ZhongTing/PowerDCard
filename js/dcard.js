@@ -3,7 +3,7 @@ function mainFun(obj)
 	var data = $(obj).html();
 	var html = data;
 	var urls = html.replace(/<br>/g,' ').match(/\bhttps?:\/\/\S+\b/g);
-	var names = html.match(/[\u4E00-\u9FA5]+大學? \S+[系所班程]\s+[男女]同學 ?[IVX]*/g);
+	var names = html.match(/((..)|([中台臺][\u4E00-\u9FA5]+))((大學?)|院) \S+[系所班程]\s+[男女]同學 ?[IVX]*/g);
 	var floors = html.match(/(([^%\w][Bb])|(^[Bb]))\d{1,3}\b/g);
 	var hideBlock = html.match(/(<br>){7,}(.*)/);
 	var origin = data;
@@ -78,7 +78,7 @@ $(".floor_num_block").each(function(){
 
 function getID(text)
 {
-	var idArray = text.match(/(\S+大學?)\s+(\S+[系所班程(狄卡)])\s*(\S+)\s*([VIX]*)/);
+	var idArray = text.match(/(\S+[大學院])\s+(\S+[系所班程(狄卡)])\s*(\S+)\s*([VIX]*)/);
 	var id='';
 	if(idArray==null)alert(text);
 	else
